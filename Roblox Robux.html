@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Matrix Login</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: black;
+      color: #0F0;
+      overflow: hidden;
+      font-family: monospace;
+    }
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+    #login {
+      display: none;
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.8);
+      padding: 20px;
+      border: 1px solid #0F0;
+      text-align: center;
+      z-index: 1;
+    }
+    input[type="password"] {
+      background: black;
+      border: 1px solid #0F0;
+      color: #0F0;
+      padding: 5px;
+      margin-top: 10px;
+    }
+    button {
+      background: black;
+      color: #0F0;
+      border: 1px solid #0F0;
+      padding: 5px 10px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    #ip-info {
+      display: none;
+      white-space: pre;
+      position: absolute;
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      background: black;
+      padding: 20px;
+      border: 1px solid #0F0;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="matrix"></canvas>
+
+  <div id="login">
+    <div>Introduce la contraseña:</div>
+    <input type="password" id="password" />
+    <br>
+    <button onclick="checkPassword()">Entrar</button>
+  </div>
+
+  <div id="ip-info">
+    IP          181.127.36.36  
+    Country     Paraguay  
+    City       Presidente Franco  
+    State      10  
+    Internet Provider (ISP) Telecel S.A.
+  </div>
+
+  <script>
+    // Matrix Rain Effect
+    const canvas = document.getElementById("matrix");
+    const ctx = canvas.getContext("2d");
+
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+
+    const letters = "アァイィウヴエカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
+    const drops = Array(Math.floor(columns)).fill(1);
+
+    function draw() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#0F0";
+      ctx.font = fontSize + "px monospace";
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = letters.charAt(Math.floor(Math.random() * letters.length));
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+    }
+
+    setInterval(draw, 35);
+
+    // Mostrar login tras 6 segundos
+    setTimeout(() => {
+      document.getElementById("login").style.display = "block";
+    }, 6000);
+
+    // Verificar contraseña
+    function checkPassword() {
+      const input = document.getElementById("password").value;
+      if (input === "098OSMAR098") {
+        document.getElementById("login").style.display = "none";
+        document.getElementById("ip-info").style.display = "block";
+      } else {
+        alert("Contraseña incorrecta.");
+      }
+    }
+  </script>
+</body>
+</html>
